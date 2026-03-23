@@ -1,0 +1,38 @@
+services:
+  backend:
+    build:
+      context: ./apps/backend
+      target: development
+    volumes:
+      - ./apps/backend/src:/app/src
+      - ./apps/backend/prisma:/app/prisma
+      - ./packages/shared:/packages/shared
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://yasme:${POSTGRES_PASSWORD:-changeme}@postgres:5432/yasme_travel
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: pnpm dev
+
+  frontend:
+    build:
+      context: ./apps/frontend
+      target: development
+    volumes:
+      - ./apps/frontend/src:/app/src
+      - ./apps/frontend/public:/app/public
+      - ./packages/shared:/packages/shared
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+    env_file:
+      - .env
+    depends_on:
+      - backend
+    command: pnpm dev

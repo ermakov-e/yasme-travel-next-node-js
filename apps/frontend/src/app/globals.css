@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Travel Bold Design Tokens */
+    --color-primary: #F97316;
+    --color-primary-dark: #EA580C;
+    --color-accent: #EC4899;
+    --color-surface: #FAFAFA;
+    --color-card: #FFFFFF;
+    --radius-card: 1rem;
+    --radius-full: 9999px;
+
+    /* shadcn/ui CSS vars */
+    --background: 0 0% 98%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 24.6 95% 53.1%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 327.4 87.1% 61.8%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 24.6 95% 53.1%;
+    --radius: 0.75rem;
+  }
+
+  * {
+    @apply border-border;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    @apply scroll-smooth;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  body {
+    @apply bg-surface text-foreground;
+    /* Prevent overscroll bounce on iOS */
+    overscroll-behavior: none;
+  }
+
+  /* Safe area support for iOS */
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .pb-safe {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}
+
+@layer components {
+  /* Group card gradient overlay */
+  .card-gradient {
+    background: linear-gradient(
+      to bottom,
+      transparent 40%,
+      rgba(0, 0, 0, 0.15) 60%,
+      rgba(0, 0, 0, 0.7) 100%
+    );
+  }
+
+  /* Glass effect for bottom nav */
+  .glass {
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.85);
+  }
+
+  /* Touch-friendly hit target */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Masonry photo grid */
+  .masonry-grid {
+    columns: 2;
+    column-gap: 3px;
+  }
+
+  .masonry-grid > * {
+    break-inside: avoid;
+    margin-bottom: 3px;
+  }
+
+  @media (min-width: 768px) {
+    .masonry-grid {
+      columns: 3;
+    }
+  }
+
+  /* Photo skeleton shimmer */
+  .skeleton-shimmer {
+    background: linear-gradient(
+      90deg,
+      #f0f0f0 25%,
+      #e0e0e0 50%,
+      #f0f0f0 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}

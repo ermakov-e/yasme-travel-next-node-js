@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm install:*)",
+      "Bash(pnpm approve-builds:*)",
+      "Bash(pnpm --filter backend db:generate)",
+      "Bash(pnpm type-check:*)",
+      "Bash(npx tsc:*)",
+      "Bash(openssl rand:*)",
+      "Bash(node -e \"console.log\\(require\\(''crypto''\\).randomBytes\\(32\\).toString\\(''hex''\\)\\)\")",
+      "Bash(pnpm --filter frontend add -D msw)"
+    ]
+  }
+}

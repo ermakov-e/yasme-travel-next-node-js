@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  yandexId  String   @unique
+  name      String
+  avatarUrl String?
+  phone     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ownedGroups Group[]       @relation("GroupOwner")
+  memberships GroupMember[]
+  photos      Photo[]
+
+  @@map("users")
+}
+
+model Group {
+  id        String   @id @default(uuid())
+  name      String
+  coverKey  String?
+  lat       Float
+  lng       Float
+  address   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ownerId String
+  owner   User   @relation("GroupOwner", fields: [ownerId], references: [id])
+
+  members GroupMember[]
+  photos  Photo[]
+
+  @@map("groups")
+}
+
+model GroupMember {
+  id       String     @id @default(uuid())
+  groupId  String
+  userId   String
+  role     MemberRole @default(MEMBER)
+  joinedAt DateTime   @default(now())
+
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id])
+
+  @@unique([groupId, userId])
+  @@map("group_members")
+}
+
+enum MemberRole {
+  OWNER
+  MEMBER
+}
+
+model Photo {
+  id         String    @id @default(uuid())
+  groupId    String
+  uploaderId String
+  storageKey String
+  caption    String?
+  takenAt    DateTime?
+  createdAt  DateTime  @default(now())
+
+  group    Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  uploader User  @relation(fields: [uploaderId], references: [id])
+
+  @@map("photos")
+}
